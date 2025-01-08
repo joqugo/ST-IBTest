@@ -11,13 +11,13 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
 # Google API credentials setup
-SERVICE_ACCOUNT_FILE = "credentials.json"  # Replace with your service account file
+SERVICE_ACCOUNT_INFO = st.secrets["gcp_service_account"]
 SCOPES = [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive'
 ]
 
-creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+creds = Credentials.from_service_account_info(SERVICE_ACCOUNT_INFO)
 sheets_service = gspread.authorize(creds)
 drive_service = build('drive', 'v3', credentials=creds)
 
