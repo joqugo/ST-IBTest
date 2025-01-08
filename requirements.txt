@@ -1,11 +1,9 @@
-import os
-import gspread
-import streamlit as st
-import time
-from fpdf import FPDF
-import pandas as pd
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from google.oauth2.service_account import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
+streamlit==1.25.0
+gspread==5.7.2
+google-auth==2.23.3
+google-auth-oauthlib==1.0.0
+google-api-python-client==2.100.0
+pandas==2.1.1
+matplotlib==3.8.0
+fpdf==1.7.2
+openpyxl==3.1.2
