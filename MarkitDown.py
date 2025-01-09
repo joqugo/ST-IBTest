@@ -26,6 +26,17 @@ SPREADSHEET_ID = "1JonYqjiZjkpqK2Cw8pmQbjFp6Vlr1OGvUUxiXxBaNZM"  # Replace with 
 SHEET_NAME = "Customer Data"  # Replace with your worksheet name
 PARENT_FOLDER_ID = "1-eebJdPTUnltZtisdVPdcGLl3tAZPOoE"  # ST-IBTEST folder in Drive
 
+# Initialize session state
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+if "responses" not in st.session_state:
+    st.session_state.responses = {}
+if "show_summary" not in st.session_state:
+    st.session_state.show_summary = False
+if "uploaded_files" not in st.session_state:
+    st.session_state.uploaded_files = []
+
+
 def authenticate(username, password):
     """Validate the username and password against stored credentials."""
     users = st.secrets["auth"]["users"]
@@ -47,16 +58,6 @@ def login():
         else:
             st.error("Invalid username or password.")
 
-# Initialize session state
-if "authenticated" not in st.session_state:
-    st.session_state["authenticated"] = False
-if "responses" not in st.session_state:
-    st.session_state.responses = {}
-if "show_summary" not in st.session_state:
-    st.session_state.show_summary = False
-if "uploaded_files" not in st.session_state:
-    st.session_state.uploaded_files = []
-
 
 # Initialize file state
 if "file" not in st.session_state:
@@ -64,16 +65,18 @@ if "file" not in st.session_state:
 
 
 def reset_form():
-    # Clear all keys from the session state
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
+    # Clear specific keys related to the form
+    keys_to_clear = ["responses", "show_summary", "uploaded_files"]
+    for key in keys_to_clear:
+        if key in st.session_state:
+            del st.session_state[key]
 
-    # Reinitialize critical default state variables
+    # Reinitialize the required session state variables
     st.session_state.responses = {}
     st.session_state.show_summary = False
     st.session_state.uploaded_files = []
 
-    # Notify the user (optional)
+    # Notify the user that the form has been reset
     st.info("Form has been reset. You can start filling it again.")
 
 # Trigger Reset at the Start if Needed
