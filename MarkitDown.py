@@ -26,6 +26,34 @@ SPREADSHEET_ID = "1JonYqjiZjkpqK2Cw8pmQbjFp6Vlr1OGvUUxiXxBaNZM"  # Replace with 
 SHEET_NAME = "Customer Data"  # Replace with your worksheet name
 PARENT_FOLDER_ID = "1-eebJdPTUnltZtisdVPdcGLl3tAZPOoE"  # ST-IBTEST folder in Drive
 
+def authenticate(username, password):
+    """Validate the username and password against stored credentials."""
+    users = st.secrets["auth"]["users"]
+    for user in users:
+        if user["username"] == username and user["password"] == password:
+            return True
+    return False
+
+def login():
+    """Render the login form and handle authentication."""
+    st.title("Login")
+    username = st.text_input("Username", key="login_username")
+    password = st.text_input("Password", type="password", key="login_password")
+
+    if st.button("Login"):
+        if authenticate(username, password):
+            st.session_state["authenticated"] = True
+            st.success("Login successful!")
+        else:
+            st.error("Invalid username or password.")
+
+# Initialize session state
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+
+
+
 # Initialize file state
 if "file" not in st.session_state:
     st.session_state["file"] = "not done"
@@ -352,6 +380,22 @@ if "show_summary" not in st.session_state:
     st.session_state.show_summary = False
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
+
+
+if not st.session_state["authenticated"]:
+    login()
+else:
+        # Main app content
+    st.title("FCT System Assessment Questionnaire")
+    
+    # Logout button
+    if st.button("Logout"):
+        st.session_state["authenticated"] = False
+        st.experimental_rerun()  # Reload the app to show the login page
+
+    # Add your existing app logic here
+    st.write("Welcome to the FCT System Assessment App!")
+
 
 # Streamlit App Title
 st.title("FCT System Assessment Questionnaire")
