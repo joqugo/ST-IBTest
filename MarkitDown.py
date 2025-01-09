@@ -50,8 +50,12 @@ def login():
 # Initialize session state
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
-
-
+if "responses" not in st.session_state:
+    st.session_state.responses = {}
+if "show_summary" not in st.session_state:
+    st.session_state.show_summary = False
+if "uploaded_files" not in st.session_state:
+    st.session_state.uploaded_files = []
 
 
 # Initialize file state
@@ -347,14 +351,6 @@ def render_dynamic_form(questions_df):
                 responses[key] = st.number_input(question_text, key=key)
     return responses
 
-
-# Streamlit App Initialization
-if "responses" not in st.session_state:
-    st.session_state.responses = {}
-if "show_summary" not in st.session_state:
-    st.session_state.show_summary = False
-if "uploaded_files" not in st.session_state:
-    st.session_state.uploaded_files = []
 
 # Function to reset the form
 def reset_form():
