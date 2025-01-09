@@ -46,17 +46,19 @@ def authenticate(username, password):
     return False
 
 def login():
-    """Render the login form and handle authentication."""
-    st.title("Login")
-    username = st.text_input("Username", key="login_username")
-    password = st.text_input("Password", type="password", key="login_password")
+    with st.form(key="login_form"):
+        st.title("Login")
+        username = st.text_input("Username", key="login_username")
+        password = st.text_input("Password", type="password", key="login_password")
+        login_button = st.form_submit_button("Login")
 
-    if st.button("Login"):
-        if authenticate(username, password):
-            st.session_state["authenticated"] = True
-            st.success("Login successful!")
-        else:
-            st.error("Invalid username or password.")
+        if login_button:
+            if authenticate(username, password):
+                st.session_state["authenticated"] = True
+                st.success("Login successful! Loading the form...")
+                st.experimental_rerun()
+            else:
+                st.error("Invalid username or password.")
 
 
 # Initialize file state
